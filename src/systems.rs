@@ -59,3 +59,26 @@ pub fn leaf_height_updater(
         (leaf_transform.translation.y / 20.0).round().abs()
     );
 }
+
+pub fn camera_follower(
+    time: Res<Time>,
+    leaf_query: Query<&mut Transform, With<PlayerLeaf>>,
+    mut camera_query: Query<&mut Transform, (With<Camera>, Without<PlayerLeaf>)>,
+) {
+    let leaf_transform = leaf_query.single();
+    let mut camera_transform = camera_query.single_mut();
+    camera_transform.translation = camera_transform.translation.lerp(
+        leaf_transform.translation.truncate().extend(15.0),
+        5.0 * time.delta_seconds(),
+    );
+    // println!(
+    //     "Player Translation {},{},{}",
+    //     leaf_transform.translation.x, leaf_transform.translation.y, leaf_transform.translation.z
+    // );
+    // println!(
+    //     "Camera Translation {},{},{}",
+    //     camera_transform.translation.x,
+    //     camera_transform.translation.y,
+    //     camera_transform.translation.z
+    // );
+}

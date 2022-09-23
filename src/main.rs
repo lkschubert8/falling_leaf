@@ -8,7 +8,7 @@ use bevy::{
 use bevy_prototype_debug_lines::DebugLinesPlugin;
 use bevy_rapier2d::prelude::*;
 use components::PlayerLeaf;
-use systems::{leaf_force_decay, leaf_height_updater, wind_blow};
+use systems::{camera_follower, leaf_force_decay, leaf_height_updater, wind_blow};
 
 fn main() {
     App::new()
@@ -24,6 +24,7 @@ fn main() {
         .add_system(wind_blow)
         .add_system(leaf_force_decay)
         .add_system(leaf_height_updater)
+        .add_system(camera_follower)
         .run();
 }
 
