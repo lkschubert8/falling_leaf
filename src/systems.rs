@@ -180,7 +180,7 @@ pub fn tea_in_mug_system(
         if mug_component.leafs_in_mug < mug_component.full_brew {
             commands
                 .spawn_bundle(SpriteBundle {
-                    texture: asset_server.load("leaf_static.png"),
+                    texture: asset_server.load("./leaf_static.png"),
                     transform: Transform::from_xyz(-1394.0, -450.0, 10.),
                     ..Default::default()
                 })

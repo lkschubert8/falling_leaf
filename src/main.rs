@@ -23,6 +23,7 @@ pub enum GameState {
 }
 
 fn main() {
+    // std::env::set_current_dir(std::env::current_exe().unwrap().parent().unwrap()).unwrap();
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.203, 0.328, 0.320))) // 52, 84, 82
         .insert_resource(WindowDescriptor {
@@ -94,7 +95,7 @@ pub fn title_screen_setup(mut commands: Commands, asset_server: Res<AssetServer>
             // Accepts a `String` or any type that converts into a `String`, such as `&str`
             "Brewing",
             TextStyle {
-                font: asset_server.load("fonts/Milky Coffee.otf"),
+                font: asset_server.load("./fonts/Milky Coffee.otf"),
                 font_size: 45.0,
                 color: Color::rgb_u8(236, 111, 28),
             },
@@ -107,7 +108,7 @@ pub fn title_screen_setup(mut commands: Commands, asset_server: Res<AssetServer>
             // Accepts a `String` or any type that converts into a `String`, such as `&str`
             "press space to begin",
             TextStyle {
-                font: asset_server.load("fonts/Milky Coffee.otf"),
+                font: asset_server.load("./fonts/Milky Coffee.otf"),
                 font_size: 20.0,
                 color: Color::rgb_u8(236, 111, 28),
             },
@@ -129,7 +130,7 @@ pub fn god_mode_toggle(mut keys: ResMut<Input<KeyCode>>, mut app_state: ResMut<S
 fn create_leaf(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn_bundle(SpriteBundle {
-            texture: asset_server.load("leaf_static.png"),
+            texture: asset_server.load("./leaf_static.png"),
             transform: Transform::from_xyz(-1394.0, -450.0, 10.),
             ..Default::default()
         })
@@ -148,7 +149,7 @@ fn create_world(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
 ) {
     commands.spawn_bundle(SpriteBundle {
-        texture: asset_server.load("bg2.png"),
+        texture: asset_server.load("./bg2.png"),
         transform: Transform::from_xyz(0., 0., 1.),
         ..Default::default()
     });
@@ -161,7 +162,7 @@ fn create_world(
         .insert(Collider::cuboid(60.0, 15.0));
 
     // Creating mug
-    let texture_handle = asset_server.load("mug.png");
+    let texture_handle = asset_server.load("./mug.png");
     let texture_atlas = TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 5, 1);
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
     commands
@@ -186,7 +187,7 @@ fn create_height_tracker(mut commands: Commands, asset_server: Res<AssetServer>)
                 // Accepts a `String` or any type that converts into a `String`, such as `&str`
                 "Gusts Left",
                 TextStyle {
-                    font: asset_server.load("fonts/Milky Coffee.otf"),
+                    font: asset_server.load("./fonts/Milky Coffee.otf"),
                     font_size: 45.0,
                     color: Color::rgb_u8(236, 111, 28),
                 },
