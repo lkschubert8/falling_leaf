@@ -28,7 +28,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         // .add_plugin(LogDiagnosticsPlugin::default())
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(50.0))
-        .add_plugin(RapierDebugRenderPlugin::default())
+        // .add_plugin(RapierDebugRenderPlugin::default())
         // .add_plugin(FrameTimeDiagnosticsPlugin::default())
         // .add_plugin(DebugLinesPlugin::default())
         .add_state(GameState::TitleScreen)
