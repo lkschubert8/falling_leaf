@@ -1,7 +1,10 @@
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 
-use crate::components::{Mug, PlayerLeaf};
+use crate::{
+    components::{GustText, Mug, PlayerLeaf},
+    GameState,
+};
 
 pub fn wind_blow(
     mut windows: ResMut<Windows>,
@@ -58,17 +61,17 @@ pub fn leaf_force_decay(
         .lerp(Vec2 { x: 0.0, y: 0.0 }, 10.0 * time.delta_seconds());
 }
 
-pub fn leaf_blow_updater(
-    mut height_widget_query: Query<&mut Text>,
+pub fn leaf_gust_updater(
+    mut gust_count_widget: Query<&mut Text, With<GustText>>,
     leaf_query: Query<&PlayerLeaf>,
 ) {
-    let mut height_widget_text = height_widget_query.single_mut();
+    let mut height_widget_text = gust_count_widget.single_mut();
     let player_leaf_res = leaf_query.get_single();
     if player_leaf_res.is_err() {
         return;
     }
     let player_leaf = player_leaf_res.unwrap();
-    height_widget_text.sections[0].value = format!("{} Blows Left", player_leaf.gusts_left);
+    height_widget_text.sections[0].value = format!("{} Gusts Left", player_leaf.gusts_left);
 }
 
 pub fn camera_follower(
@@ -161,6 +164,7 @@ pub fn tea_in_mug_system(
     )>,
     texture_atlases: Res<Assets<TextureAtlas>>,
     asset_server: Res<AssetServer>,
+    mut app_state: ResMut<State<GameState>>,
 ) {
     let player_res = query_player_leaf.get_single();
     if player_res.is_err() {
@@ -173,18 +177,23 @@ pub fn tea_in_mug_system(
         let texture_atlas = texture_atlases.get(texture_atlas_handle).unwrap();
         sprite.index = (sprite.index + 1) % texture_atlas.textures.len();
         commands.entity(player).despawn();
-        commands
-            .spawn_bundle(SpriteBundle {
-                texture: asset_server.load("leaf_static.png"),
-                transform: Transform::from_xyz(-1394.0, -450.0, 10.),
-                ..Default::default()
-            })
-            .insert(ExternalForce {
-                force: Vec2::new(0.0, 0.0),
-                torque: 0.0,
-            })
-            .insert(RigidBody::Dynamic)
-            .insert(Collider::cuboid(10.0, 10.0))
-            .insert(PlayerLeaf { gusts_left: 1000 });
+        if mug_component.leafs_in_mug < mug_component.full_brew {
+            commands
+                .spawn_bundle(SpriteBundle {
+                    texture: asset_server.load("leaf_static.png"),
+                    transform: Transform::from_xyz(-1394.0, -450.0, 10.),
+                    ..Default::default()
+                })
+                .insert(ExternalForce {
+                    force: Vec2::new(0.0, 0.0),
+                    torque: 0.0,
+                })
+                .insert(RigidBody::Dynamic)
+                .insert(Collider::cuboid(10.0, 10.0))
+                .insert(PlayerLeaf { gusts_left: 1000 });
+        } else {
+            // Insert win state here
+            app_state.set(GameState::BrewedTea).unwrap();
+        }
     }
 }

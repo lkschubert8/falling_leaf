@@ -8,4 +8,8 @@ pub struct PlayerLeaf {
 #[derive(Component)]
 pub struct Mug {
     pub leafs_in_mug: u32,
+    pub full_brew: u32,
 }
+
+#[derive(Component)]
+pub struct GustText {}
