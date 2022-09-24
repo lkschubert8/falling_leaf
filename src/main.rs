@@ -25,6 +25,13 @@ pub enum GameState {
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.203, 0.328, 0.320))) // 52, 84, 82
+        .insert_resource(WindowDescriptor {
+            width: 800.,
+            height: 600.,
+            title: "Bevy game".to_string(), // ToDo
+            canvas: Some("#bevy".to_owned()),
+            ..Default::default()
+        })
         .add_plugins(DefaultPlugins)
         // .add_plugin(LogDiagnosticsPlugin::default())
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(50.0))
